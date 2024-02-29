@@ -12,12 +12,15 @@ public class PlayerController : MonoBehaviour
 
     bool grounded;
 
+    [HideInInspector] public bool gameOver;
+
     Rigidbody rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         Physics.gravity *= gravityModifier;
+        gameOver = false;
     }
 
     void Update()
@@ -31,6 +34,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        grounded = true;
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            grounded = true;
+        }
+        else if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            gameOver = true;
+            Debug.Log("Game Over!");
+        }
     }
 }
