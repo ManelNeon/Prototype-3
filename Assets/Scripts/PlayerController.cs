@@ -16,8 +16,11 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody rb;
 
+    Animator playerAnim;
+
     void Start()
     {
+        playerAnim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         Physics.gravity *= gravityModifier;
         gameOver = false;
@@ -25,10 +28,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        if (Input.GetKeyDown(KeyCode.Space) && grounded && !gameOver)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             grounded = false;
+            playerAnim.SetTrigger("Jump_trig");
         }
     }
 
@@ -42,6 +46,8 @@ public class PlayerController : MonoBehaviour
         {
             gameOver = true;
             Debug.Log("Game Over!");
+            playerAnim.SetBool("Death_b", true);
+            playerAnim.SetInteger("DeathType_int", 1);
         }
     }
 }
